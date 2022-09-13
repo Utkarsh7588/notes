@@ -15,7 +15,7 @@ void main() {
     });
     test('Should be able to be initialized', () async {
       await provider.initialize();
-      expect(provider.isInitialized, null);
+      expect(provider.isInitialized, true);
     });
     test('user should be null after initialization', () {
       expect(provider.currentUser, null);
@@ -37,7 +37,7 @@ void main() {
           throwsA(const TypeMatcher<UserNotFoundAuthException>()));
       final badPasswordUser = provider.createUser(
         email: 'someone@bar.com',
-        password: 'foodbar',
+        password: 'foobar',
       );
       expect(badPasswordUser,
           throwsA(const TypeMatcher<WrongPasswordAuthException>()));
@@ -116,10 +116,11 @@ class MockAuthProvider implements AuthProvider {
   }
 
   @override
-  Future<void> sendEmailVerification() {
+  Future<void> sendEmailVerification() async {
     if (!isInitialized) throw NotInitializedException();
     final user = _user;
     if (user == null) throw UserNotFoundAuthException();
-    throw UnimplementedError();
+    const newUser = AuthUser(isEmailVerified: true);
+    _user = newUser;
   }
 }

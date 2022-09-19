@@ -27,20 +27,17 @@ class NotesService {
     }
   }
 
-  Future<void> _cachNotes() async {
+  Future<void> _cacheNotes() async {
     final allNotes = await getAllNotes();
     _notes = allNotes.toList();
     _notesStreamController.add(_notes);
   }
 
-  Future<DatabaseNote> updateNote({
-    required DatabaseNote note,
-    required String text,
-  }) async {
+  Future<DatabaseNote> updateNote(
+      {required DatabaseNote note, required String text}) async {
     await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
     await getNote(id: note.id);
-
     final updatesCount = await db.update(noteTable, {
       textColumn: text,
       isSyncedWithCloudColumn: 0,
@@ -69,7 +66,7 @@ class NotesService {
     final notes = await db.query(
       noteTable,
       limit: 1,
-      where: 'id=?',
+      where: 'id = ?',
       whereArgs: [id],
     );
     if (notes.isEmpty) {
@@ -95,12 +92,12 @@ class NotesService {
   Future<void> deleteNote({required int id}) async {
     await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
-    final deleteCount = await db.delete(
+    final deletedCount = await db.delete(
       noteTable,
-      where: 'id=?',
+      where: 'id = ?',
       whereArgs: [id],
     );
-    if (deleteCount == 0) {
+    if (deletedCount == 0) {
       throw CouldNotDeleteNote();
     } else {
       _notes.removeWhere((note) => note.id == id);
@@ -172,11 +169,14 @@ class NotesService {
   Future<void> deleteUser({required String email}) async {
     await _ensureDbIsOpen();
     final db = _getDatabaseOrThrow();
-    final deleteCount = await db.delete(
+    final deletedCount = await db.delete(
       userTable,
       where: 'email=?',
       whereArgs: [email.toLowerCase],
     );
+    if (deletedCount != 1) {
+      throw CouldNotDeleteUser();
+    }
   }
 
   Database _getDatabaseOrThrow() {
@@ -217,7 +217,7 @@ class NotesService {
       await db.execute(createUserTable);
 
       await db.execute(createNoteTable);
-      await _cachNotes();
+      await _cacheNotes();
     } on MissingPlatformDirectoryException {
       throw UnableToGetDocumentDirectory();
     }
@@ -290,6 +290,6 @@ const createNoteTable = '''CREATE TABLE IF NOT EXISTS "note" (
 	"user_id"	INTEGER NOT NULL,
 	"text"	TEXT,
 	"is_synced_with_cloud"	INTEGER NOT NULL DEFAULT 0,
-	PRIMARY KEY("id" AUTOINCREMENT),
-	FOREIGN KEY("user_id") REFERENCES "user "("id")
+	FOREIGN KEY("user_id") REFERENCES "user "("id"),
+  PRIMARY KEY("id" AUTOINCREMENT)
 ); ''';

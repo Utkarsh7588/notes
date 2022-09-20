@@ -86,12 +86,14 @@ class _NewNotesViewState extends State<NewNotesView> {
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.done:
-                _note = snapshot.data as DatabaseNote;
+                _note = snapshot.data as DatabaseNote?;
                 _setupTextControllerListner();
                 return TextField(
                   controller: _textController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
+                  decoration: const InputDecoration(
+                      hintText: 'Start typing your note...'),
                 );
               default:
                 return const CircularProgressIndicator();

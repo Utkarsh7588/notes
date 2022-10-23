@@ -92,6 +92,13 @@ class _LoginViewState extends State<LoginView> {
               },
               child: const Text('not registered yet? click here'),
             ),
+            TextButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(
+                        const AuthEventShouldRegister(),
+                      );
+                },
+                child: const Text('Forgot Password?'))
           ],
         ),
       ),

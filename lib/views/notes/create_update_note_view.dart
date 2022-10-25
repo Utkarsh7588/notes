@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:notes/constants/routes.dart';
 import 'package:notes/services/auth/auth_service.dart';
 import 'package:notes/utilities/generics/get_arguments.dart';
 
 import 'package:notes/services/cloud/cloud_note.dart';
 import 'package:notes/services/cloud/firebase_cloud_storage.dart';
 import 'package:notes/services/cloud/cloud_storage_exceptions.dart';
+import 'package:notes/views/notes/notes_view.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../utilities/dialogs/cannot_share_empty_note_dialoge.dart';
@@ -94,6 +96,13 @@ class _CreateupdateNoteviewState extends State<CreateupdateNoteview> {
       appBar: AppBar(
         title: const Text('New Note'),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil(notesViewRoute, (route) => false);
+            },
+            icon: const Icon(Icons.check),
+          ),
           IconButton(
             onPressed: () async {
               final text = _textController.text;

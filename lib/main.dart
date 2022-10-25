@@ -29,6 +29,7 @@ void main() {
       ),
       routes: {
         createOrUpdateNoteRoute: (context) => const CreateupdateNoteview(),
+        notesViewRoute: (context) => const NotesView(),
       },
     ),
   );

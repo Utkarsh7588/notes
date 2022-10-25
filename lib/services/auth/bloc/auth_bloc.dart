@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:notes/services/auth/auth_provider.dart';
+import 'package:notes/services/auth/auth_user.dart';
 import 'package:notes/services/auth/bloc/auth_event.dart';
 import 'package:notes/services/auth/bloc/auth_state.dart';
+import 'package:path/path.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc(AuthProvider provider)
@@ -50,10 +52,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final email = event.email;
         final password = event.password;
         try {
+          emit(
+            const AuthStateRegistering(
+              exception: null,
+              isLoading: true,
+            ),
+          );
           await provider.createUser(
             email: email,
             password: password,
           );
+
           await provider.sendEmailVerification();
           emit(const AuthStateNeedsVerification(isLoading: false));
         } on Exception catch (e) {
@@ -130,6 +139,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     on<AuthEventLogOut>((event, emit) async {
       try {
+        final user = provider.currentUser;
+        emit(AuthStateLoggedIn(
+          user: user!,
+          isLaoding: true,
+        ));
         await provider.logOut();
         emit(
           const AuthStateLoggedOut(

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:notes/constants/routes.dart';
+
 import 'package:notes/services/auth/auth_exceptions.dart';
-import 'package:notes/services/auth/auth_service.dart';
+
 import 'package:notes/services/auth/bloc/auth_bloc.dart';
 import 'package:notes/services/auth/bloc/auth_event.dart';
-import 'package:notes/utilities/dialogs/loading_dialog.dart';
 
 import '../services/auth/bloc/auth_state.dart';
 import '../utilities/dialogs/error_dialog.dart';
@@ -51,55 +50,120 @@ class _LoginViewState extends State<LoginView> {
       },
       child: Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: const Text('login'),
         ),
-        body: Column(
-          children: [
-            TextField(
-              controller: _email,
-              enableSuggestions: false,
-              autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
-              textAlign: TextAlign.center,
-              decoration: const InputDecoration(hintText: 'Email'),
-            ),
-            TextField(
-              controller: _password,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              textAlign: TextAlign.center,
-              decoration: const InputDecoration(hintText: 'Password'),
-            ),
-            TextButton(
-              onPressed: () async {
-                final email = _email.text;
-                final password = _password.text;
-                context.read<AuthBloc>().add(
-                      AuthEventLogIn(
-                        email,
-                        password,
+        body: Container(
+          padding: const EdgeInsets.all(17),
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/icon/image.png',
+                height: 180,
+                scale: 2.0,
+                opacity: const AlwaysStoppedAnimation(0.75),
+                alignment: Alignment.topCenter,
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 27, 0, 0),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color(0xff332900),
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextField(
+                  controller: _email,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  keyboardType: TextInputType.emailAddress,
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(hintText: 'Email'),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: const Color(0xff332900),
+                  ),
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextField(
+                  controller: _password,
+                  obscureText: true,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(hintText: 'Password'),
+                ),
+              ),
+              Row(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(80, 15, 10, 15),
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(30),
+                      color: const Color(0xFFFECD00),
+                    ),
+                    child: TextButton(
+                      onPressed: () async {
+                        final email = _email.text;
+                        final password = _password.text;
+                        context.read<AuthBloc>().add(
+                              AuthEventLogIn(
+                                email,
+                                password,
+                              ),
+                            );
+                      },
+                      child: const Text(
+                        '   Log In   ',
+                        style: TextStyle(color: Colors.black),
                       ),
-                    );
-              },
-              child: const Text('Login'),
-            ),
-            TextButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(
-                      const AuthEventShouldRegister(),
-                    );
-              },
-              child: const Text('not registered yet? click here'),
-            ),
-            TextButton(
-                onPressed: () {
-                  context.read<AuthBloc>().add(
-                        const AuthEventForgotPassword(),
-                      );
-                },
-                child: const Text('Forgot Password?'))
-          ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(30, 15, 70, 15),
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      borderRadius: BorderRadius.circular(30),
+                      color: const Color(0xFFFECD00),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        context.read<AuthBloc>().add(
+                              const AuthEventShouldRegister(),
+                            );
+                      },
+                      child: const Text(
+                        '  Sign Up  ',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: BorderRadius.circular(30),
+                  color: const Color(0xFFFECD00),
+                ),
+                child: TextButton(
+                    onPressed: () {
+                      context.read<AuthBloc>().add(
+                            const AuthEventForgotPassword(),
+                          );
+                    },
+                    child: const Text(
+                      'Forgot Password?',
+                      style: TextStyle(color: Colors.black),
+                    )),
+              )
+            ],
+          ),
         ),
       ),
     );

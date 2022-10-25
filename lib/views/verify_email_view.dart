@@ -21,24 +21,54 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       ),
       body: Column(
         children: [
-          const Text('We have sent you  email address'),
+          Container(
+              margin: const EdgeInsets.fromLTRB(0, 15, 0, 0),
+              child: const Text('We have sent you  email address')),
           const Text(
               'If you havent recived it yet please click on the button below'),
-          TextButton(
-            onPressed: () {
-              context
-                  .read<AuthBloc>()
-                  .add(const AuthEventSendEmailVerification());
-            },
-            child: const Text('Send email verification'),
+          Container(
+            alignment: Alignment.center,
+            margin: const EdgeInsets.fromLTRB(110, 20, 110, 10),
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(30),
+              color: const Color(0xFFFECD00),
+            ),
+            child: TextButton(
+              onPressed: () {
+                context
+                    .read<AuthBloc>()
+                    .add(const AuthEventSendEmailVerification());
+              },
+              child: const Text(
+                'Send email verification',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ),
           ),
-          TextButton(
-            onPressed: () async {
-              context.read<AuthBloc>().add(
-                    const AuthEventLogOut(),
-                  );
-            },
-            child: const Text('Restart'),
+          Container(
+            margin: const EdgeInsets.fromLTRB(160, 0, 160, 0),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.circular(30),
+              color: const Color(0xFFFECD00),
+            ),
+            child: TextButton(
+              onPressed: () async {
+                context.read<AuthBloc>().add(
+                      const AuthEventLogOut(),
+                    );
+              },
+              child: const Text(
+                'Restart',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ),
           ),
         ],
       ),

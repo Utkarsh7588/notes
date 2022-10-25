@@ -103,7 +103,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           );
           if (!user.isEmailVerified) {
             emit(
-              const AuthStateLoggedOut(exception: null, isLoading: false),
+              const AuthStateLoggedOut(
+                exception: null,
+                isLoading: false,
+              ),
             );
             emit(const AuthStateNeedsVerification(isLoading: false));
           } else {
@@ -114,10 +117,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               ),
             );
           }
-          emit(AuthStateLoggedIn(
-            user: user,
-            isLaoding: false,
-          ));
+          if (user.isEmailVerified) {
+            emit(AuthStateLoggedIn(
+              user: user,
+              isLaoding: false,
+            ));
+          }
         } on Exception catch (e) {
           emit(AuthStateLoggedOut(exception: e, isLoading: false));
         }

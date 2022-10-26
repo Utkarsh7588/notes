@@ -5,7 +5,7 @@ Future<bool> showDeleteDialog(BuildContext context) {
   return showGenericDialog<bool>(
     context: context,
     title: 'Delete',
-    content: 'Are you sure you want to log out?',
+    content: 'Are you sure you want to delete note?',
     optionsBuilder: () => {
       'Cancel': false,
       'Yes': true,

@@ -44,7 +44,9 @@ class AuthStateRegistering extends AuthState {
 }
 
 class AuthStateNeedsVerification extends AuthState {
-  const AuthStateNeedsVerification({required isLoading})
+  final Exception? exception;
+  const AuthStateNeedsVerification(
+      {required this.exception, required bool isLoading})
       : super(isLoading: isLoading);
 }
 
@@ -62,4 +64,12 @@ class AuthStateLoggedOut extends AuthState with EquatableMixin {
   @override
   List<Object?> get props =>
       [exception, isLoading]; //properties taken into account to check equality
+}
+
+class AuthStateEmailVerificationSent extends AuthState {
+  final Exception? exception;
+  const AuthStateEmailVerificationSent({
+    required this.exception,
+    required bool isloading,
+  }) : super(isLoading: isloading);
 }

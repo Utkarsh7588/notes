@@ -19,7 +19,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
-      title: 'Notes',
+      title: 'notes',
       theme: ThemeData(
         primarySwatch: Palette.kToDark,
       ),
@@ -30,6 +30,7 @@ void main() {
       routes: {
         createOrUpdateNoteRoute: (context) => const CreateupdateNoteview(),
         notesViewRoute: (context) => const NotesView(),
+        loginViewRoute: (context) => const LoginView(),
       },
     ),
   );
@@ -61,6 +62,8 @@ class HomePage extends StatelessWidget {
         return const RegisterView();
       } else if (state is AuthStateForgotPassword) {
         return const ForgotPasswordView();
+      } else if (state is AuthStateCreateNote) {
+        return const CreateupdateNoteview();
       } else {
         return const Scaffold(
           body: CircularProgressIndicator(),

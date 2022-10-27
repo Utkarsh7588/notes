@@ -73,3 +73,8 @@ class AuthStateEmailVerificationSent extends AuthState {
     required bool isloading,
   }) : super(isLoading: isloading);
 }
+
+class AuthStateCreateNote extends AuthState {
+  const AuthStateCreateNote({required bool isloading})
+      : super(isLoading: isloading);
+}

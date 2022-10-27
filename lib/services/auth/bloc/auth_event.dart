@@ -37,3 +37,11 @@ class AuthEventForgotPassword extends AuthEvent {
   final String? email;
   const AuthEventForgotPassword({this.email});
 }
+
+class AuthEventNoteCreated extends AuthEvent {
+  const AuthEventNoteCreated();
+}
+
+class AuthEventCreateNote extends AuthEvent {
+  const AuthEventCreateNote();
+}

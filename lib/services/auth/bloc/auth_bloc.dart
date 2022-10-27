@@ -180,6 +180,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         );
       }
     });
+    on<AuthEventNoteCreated>((event, emit) {
+      final user = provider.currentUser;
+      emit(
+        AuthStateLoggedIn(user: user!, isLaoding: false),
+      );
+    });
     on<AuthEventShouldRegister>(
       (event, emit) {
         try {
@@ -195,5 +201,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       },
     );
+    on<AuthEventCreateNote>((event, emit) {
+      emit(const AuthStateCreateNote(isloading: false));
+    });
   }
 }
